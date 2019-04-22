@@ -1,12 +1,16 @@
 # nl-ascode-jenkins-pipeline
 Run a NeoLoad YAML project part of Jenkins pipeline
 
+## Jenkins pipeline
+See [Jenkinsfile](Jenkinsfile).
+
 ## Docker Jenkins Slave (from JNLP launcher)
 
-Based on docker image:
-[Jenkins JNLP Agent Docker image](https://github.com/jenkinsci/docker-jnlp-slave/)
+See [Dockerfile](Dockerfile).
 
-With NeoLoad 6.9.0 (neoload_6_9_0_linux_x64.sh). See [Dockerfile](Dockerfile).
+Based on [Jenkins JNLP Agent Docker image](https://github.com/jenkinsci/docker-jnlp-slave/) image.
+
+With NeoLoad 6.9.0 ([neoload_6_9_0_linux_x64.sh](https://www.neotys.com/support/download-neoload)). 
 
 Build the container: 
 
@@ -28,8 +32,7 @@ See [project.yaml](nlproject/project.yaml).
 
 See [Neotys-Labs/neoload-models](https://github.com/Neotys-Labs/neoload-models/tree/v3/neoload-project/doc/v3).
 
-## Jenkins pipeline
-See [Jenkinsfile](Jenkinsfile).
+
 
 
 
