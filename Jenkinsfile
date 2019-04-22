@@ -55,7 +55,7 @@ team.server.enabled=false
         
         stage('Display NLP file') {
             steps {
-	           sh "cat project.nlp"
+	           sh "cat /home/neoload/nlProject/project.nlp"
 	        }
 	    }       
         
@@ -98,14 +98,14 @@ populations:
         
         stage('Display YAML file') {
             steps {
-	           sh "cat project.yaml"
+	           sh "cat /home/neoload/nlProject/project.yaml"
 	        }
 	    }
 	    
 	     stage('Launch NeoLoad') {
             steps {
 	          sh "/home/neoload/neoload/bin/NeoLoadCmd"+
-                      " -project /home/neoload/nlProject/project.yaml"+
+                      " -project /home/neoload/nlProject/project.nlp /home/neoload/nlProject/project.yaml"+
                       " -launch MyScenario"+
                       " -testResultName 'Load Test(build ${BUILD_NUMBER})'"+
                       " -description 'Based on project.yaml'"+
