@@ -1,8 +1,21 @@
 pipeline {    
+
+	properties([
+  		parameters([
+   		 string(name: 'NL_WEB_TOKEN', defaultValue: '', description: 'Neoload Web token'),
+   		 string(name: 'NTS_LOGIN_PASSWORD', defaultValue: '', description: 'NTS login:password scrambled'),
+   		 string(name: 'LICENCE_ID', defaultValue: '', description: 'Licence ID'),
+   		 string(name: 'NTS_URL', defaultValue: '', description: 'NTS URL')
+   		])
+	])
     
     environment {	    
 	    MY_VARIABLE = 'my variable content'
 	    WORKSPACE = pwd()
+	    NL_WEB_TOKEN = ${params.NL_WEB_TOKEN}
+	    NTS_LOGIN_PASSWORD =  ${params.NTS_LOGIN_PASSWORD}
+	    LICENCE_ID = ${params.LICENCE_ID}
+	    NTS_URL = ${params.LICENCE_ID}
 	}
 	
 	agent { 
@@ -11,10 +24,15 @@ pipeline {
 	
     stages {
                    
-        stage('Display environment variables') {
+        stage('Display parameters') {
             steps {
-                echo "JAVA_HOME is ${env.JAVA_HOME} on this machine"
-				echo "MY_VARIABLE is ${MY_VARIABLE}"
+            	echo "MY_VARIABLE: ${MY_VARIABLE}"
+            	echo "WORKSPACE: ${WORKSPACE}"
+            	echo "NL_WEB_TOKEN: ${NL_WEB_TOKEN}"
+            	echo "NTS_LOGIN_PASSWORD: ${NTS_LOGIN_PASSWORD}"
+            	echo "LICENCE_ID: ${LICENCE_ID}"
+            	echo "NTS_URL: ${NTS_URL}"
+                echo "JAVA_HOME: ${env.JAVA_HOME}"				
             }
         }
         
@@ -24,7 +42,7 @@ pipeline {
         
         stage('Create YAML file') {
             steps {               
-                writeFile file: "project.yaml", text: """
+                writeFile file: "/home/neoload/nlProject/project.yaml", text: """
 name: MyProject
 sla_profiles:
 - name: MySLAProfile
@@ -37,29 +55,6 @@ variables:
 - constant:
     name: constant_variable
     value: 118218
-- file:
-    name: cities_file
-    description: cities variable file description
-    column_names: ["City", "Country", "Population", "Longitude", "Latitude"]
-    is_first_line_column_names: false
-    start_from_line: 5
-    delimiter: ";"
-    path: data/list_of_cities.csv
-    change_policy: each_user
-    scope: unique
-    order: sequential
-    out_of_value: stop_test
-- file:
-    name: cities2_file
-    description: cities2 variable file description
-    is_first_line_column_names: true
-    start_from_line: 1
-    delimiter: ";"
-    path: data/list_of_cities.csv
-    change_policy: each_page
-    scope: local
-    order: random
-    out_of_value: no_value_code
 - counter:
     name: My Counter
     start: 0
@@ -109,10 +104,19 @@ populations:
 	    
 	     stage('Launch NeoLoad') {
             steps {
-	           neoloadRun executable: '/home/neoload/bin/NeoLoadCmd', 
-	           		project: 'project.yaml', 
-	           		scenario: 'myScenario', 
-	           		trendGraphs: ['AvgResponseTime', 'ErrorRate']
+	          sh "/home/neoload/bin/NeoLoadCmd"+
+                      " -project /home/neoload/nlProject/project.yaml"+
+                      " -launch MyScenario"+
+                      " -testResultName 'Load Test(build ${BUILD_NUMBER})'"+
+                      " -description 'Based on project.yaml'"+
+                      " -report ${env.WORKSPACE}/neoload-report/neoload-report.html,${env.WORKSPACE}/neoload-report/neoload-report.xml"+
+                      " -SLAJUnitResults ${env.WORKSPACE}/neoload-report/junit-sla-results.xml"+
+                      " -noGUI"+
+                      " -nlweb"+
+                      " -nlwebToken ${NL_WEB_TOKEN}"+
+                      " -NTS ${NTS_URL}"+
+                      " -NTSLogin ${NTS_LOGIN_PASSWORD}"+
+                      " -leaseLicense ${LICENCE_ID}:10:1"
 	        }
 	    }
 	    
