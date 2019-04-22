@@ -6,7 +6,7 @@ Run a NeoLoad YAML project part of Jenkins pipeline
 Based on docker image:
 [Jenkins JNLP Agent Docker image](https://github.com/jenkinsci/docker-jnlp-slave/)
 
-With NeoLoad 6.10.0 (neoload_6_10_0_linux_x64.sh). See [Dockerfile](Dockerfile).
+With NeoLoad 6.9.0 (neoload_6_9_0_linux_x64.sh). See [Dockerfile](Dockerfile).
 
 Build the container: 
 docker build . -t neoload-controller-jenkins-slave:latest

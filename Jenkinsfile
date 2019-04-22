@@ -17,18 +17,7 @@ pipeline {
     }
 	
     stages {
-    	
-    	stage("parameterizing") {
-            steps {
-                script {
-                    if ("${params.Invoke_Parameters}" == "Yes") {
-                        currentBuild.result = 'ABORTED'
-                        error('DRY RUN COMPLETED. JOB PARAMETERIZED.')
-                    }
-                }
-            }
-        }
-                   
+    	           
         stage('Display parameters') {
             steps {
             	echo "MY_VARIABLE: ${MY_VARIABLE}"
@@ -45,6 +34,31 @@ pipeline {
         //		git(branch: 'develop', url: 'https://github.com/SebastienRichert/nl-ascode-jenkins-pipeline.git')         
         // }
         
+        stage('Create NLP file') {
+            steps {               
+                writeFile file: "/home/neoload/nlProject/project.nlp", text: """
+# Project description file
+project.name=test
+project.version=6.5
+project.original.version=6.5
+product.name=NeoLoad
+product.original.name=NeoLoad
+product.version=6.10.0
+product.original.version=6.9.0
+project.id=1a1eb7d7-81b1-453e-9020-26a4036a53ca
+project.config.path=config
+project.config.storage=FOLDER
+team.server.enabled=false
+      """
+            }
+        }
+        
+        stage('Display NLP file') {
+            steps {
+	           sh "cat project.nlp"
+	        }
+	    }       
+        
         stage('Create YAML file') {
             steps {               
                 writeFile file: "/home/neoload/nlProject/project.yaml", text: """
@@ -60,29 +74,10 @@ variables:
 - constant:
     name: constant_variable
     value: 118218
-- counter:
-    name: My Counter
-    start: 0
-    end: 1
-    increment: 10
-    change_policy: each_iteration
-    scope: local
-    out_of_value: cycle
-- random_number:
-    name: MyRandomNumberSansPredictable
-    min: 9999
-    max: -1
 user_paths:
   - name: MyUserPath1
     actions:
-      steps:
-        - javascript:
-            name: My Javascript
-            description: My description
-            script: |
-              // Get variable value from VariableManager
-              var myVar = context.variableManager.getValue("CounterVariable_1");
-              logger.debug("ComputedValue="+myVar);
+      steps:        
         - delay: 1000ms               
 scenarios:
 - name: MyScenario
@@ -109,7 +104,7 @@ populations:
 	    
 	     stage('Launch NeoLoad') {
             steps {
-	          sh "/home/neoload/bin/NeoLoadCmd"+
+	          sh "/home/neoload/neoload/bin/NeoLoadCmd"+
                       " -project /home/neoload/nlProject/project.yaml"+
                       " -launch MyScenario"+
                       " -testResultName 'Load Test(build ${BUILD_NUMBER})'"+

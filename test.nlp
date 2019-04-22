@@ -1,0 +1,12 @@
+# Project description file
+project.name=test
+project.version=6.5
+project.original.version=6.5
+product.name=NeoLoad
+product.original.name=NeoLoad
+product.version=6.10.0
+product.original.version=6.9.0
+project.id=1a1eb7d7-81b1-453e-9020-26a4036a53ca
+project.config.path=config
+project.config.storage=FOLDER
+team.server.enabled=false
