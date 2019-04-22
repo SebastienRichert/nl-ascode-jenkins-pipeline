@@ -3,8 +3,8 @@ pipeline {
  	parameters {
          string(name: 'NL_WEB_TOKEN', defaultValue: '', description: 'Neoload Web token')
    		 string(name: 'NTS_LOGIN_PASSWORD', defaultValue: '', description: 'NTS login:password scrambled')
-   		 string(name: 'LICENCE_ID', defaultValue: '', description: 'Licence ID')
-   		 string(name: 'NTS_URL', defaultValue: '', description: 'NTS URL')
+   		 string(name: 'LICENCE_ID', defaultValue: 'MC0CFFx8Yzb6xQKDHI9UvXDdj5hNaQRcAhUAlkH21lUIqf0TufQ6MufmjwO8qPw=', description: 'Licence ID')
+   		 string(name: 'NTS_URL', defaultValue: 'http://10.0.4.170:8800/nts', description: 'NTS URL')
     }
        
     environment {	    
