@@ -9,11 +9,7 @@ pipeline {
        
     environment {	    
 	    MY_VARIABLE = 'my variable content'
-	    WORKSPACE = pwd()
-	    NL_WEB_TOKEN = ${params.NL_WEB_TOKEN}
-	    NTS_LOGIN_PASSWORD =  ${params.NTS_LOGIN_PASSWORD}
-	    LICENCE_ID = ${params.LICENCE_ID}
-	    NTS_URL = ${params.LICENCE_ID}
+	    WORKSPACE = pwd()	    
 	}
 	
 	agent { 
@@ -21,15 +17,26 @@ pipeline {
     }
 	
     stages {
+    	
+    	stage("parameterizing") {
+            steps {
+                script {
+                    if ("${params.Invoke_Parameters}" == "Yes") {
+                        currentBuild.result = 'ABORTED'
+                        error('DRY RUN COMPLETED. JOB PARAMETERIZED.')
+                    }
+                }
+            }
+        }
                    
         stage('Display parameters') {
             steps {
             	echo "MY_VARIABLE: ${MY_VARIABLE}"
             	echo "WORKSPACE: ${WORKSPACE}"
-            	echo "NL_WEB_TOKEN: ${NL_WEB_TOKEN}"
-            	echo "NTS_LOGIN_PASSWORD: ${NTS_LOGIN_PASSWORD}"
-            	echo "LICENCE_ID: ${LICENCE_ID}"
-            	echo "NTS_URL: ${NTS_URL}"
+            	echo "NL_WEB_TOKEN: ${params.NL_WEB_TOKEN}"
+            	echo "NTS_LOGIN_PASSWORD: ${params.NTS_LOGIN_PASSWORD}"
+            	echo "LICENCE_ID: ${params.LICENCE_ID}"
+            	echo "NTS_URL: ${params.NTS_URL}"
                 echo "JAVA_HOME: ${env.JAVA_HOME}"				
             }
         }
@@ -111,10 +118,10 @@ populations:
                       " -SLAJUnitResults ${env.WORKSPACE}/neoload-report/junit-sla-results.xml"+
                       " -noGUI"+
                       " -nlweb"+
-                      " -nlwebToken ${NL_WEB_TOKEN}"+
-                      " -NTS ${NTS_URL}"+
-                      " -NTSLogin ${NTS_LOGIN_PASSWORD}"+
-                      " -leaseLicense ${LICENCE_ID}:10:1"
+                      " -nlwebToken ${params.NL_WEB_TOKEN}"+
+                      " -NTS ${params.NTS_URL}"+
+                      " -NTSLogin ${params.NTS_LOGIN_PASSWORD}"+
+                      " -leaseLicense ${params.LICENCE_ID}:10:1"
 	        }
 	    }
 	    
