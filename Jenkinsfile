@@ -1,9 +1,9 @@
 pipeline {    
 
  	parameters {
-         string(name: 'NL_WEB_TOKEN', defaultValue: '', description: 'Neoload Web token'),
-   		 string(name: 'NTS_LOGIN_PASSWORD', defaultValue: '', description: 'NTS login:password scrambled'),
-   		 string(name: 'LICENCE_ID', defaultValue: '', description: 'Licence ID'),
+         string(name: 'NL_WEB_TOKEN', defaultValue: '', description: 'Neoload Web token')
+   		 string(name: 'NTS_LOGIN_PASSWORD', defaultValue: '', description: 'NTS login:password scrambled')
+   		 string(name: 'LICENCE_ID', defaultValue: '', description: 'Licence ID')
    		 string(name: 'NTS_URL', defaultValue: '', description: 'NTS URL')
     }
        
