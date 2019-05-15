@@ -6,7 +6,8 @@ See [Jenkinsfile](Jenkinsfile).
 
 ## Docker Jenkins Slave (from JNLP launcher)
 
-See [Dockerfile](Dockerfile).
+See [Dockerfile jnlp-slave + NL 6.9](Dockerfile%20jnlp-slave%20%2B%20NL%206.9/Dockerfile).
+See [Dockerfile jnlp-slave + NL 6.10](Dockerfile%20jnlp-slave%20%2B%20NL%206.10/Dockerfile).
 
 Based on [Jenkins JNLP Agent Docker image](https://github.com/jenkinsci/docker-jnlp-slave/) image.
 
