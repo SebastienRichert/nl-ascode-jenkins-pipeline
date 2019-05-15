@@ -102,7 +102,7 @@ populations:
 	        }
 	    }
 	    
-	     stage('Launch NeoLoad') {
+	     stage('Launch NeoLoadCmd with sh') {
             steps {
 	          sh "/home/neoload/neoload/bin/NeoLoadCmd"+
                       " -project /home/neoload/nlProject/project.nlp /home/neoload/nlProject/project.yaml"+
@@ -119,6 +119,19 @@ populations:
                       " -leaseLicense ${params.LICENCE_ID}:10:1"
 	        }
 	    }
+		
+		 stage('Launch neoloadRun'){
+			steps {
+				script{
+					neoloadRun executable: '/home/neoload/neoload/bin/NeoLoadCmd', 
+						project: '/home/neoload/nlProject/project.yaml', 
+						displayGui: 'true', 
+						scenario: 'MyScenario', 
+						trendGraphs: ['AvgResponseTime', 'ErrorRate'],
+						autoArchive: 'false' 
+				}
+	       }
+		}	    
 	    
 	    
     }
